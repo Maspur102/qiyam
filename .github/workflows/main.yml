@@ -28,11 +28,14 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Run Build Runner
-        run: dart run build_runner build --delete-conflicting-outputs
+      # LANGKAH INI DINONAKTIFKAN SEMENTARA.
+      # Hapus tanda pagar (#) jika di masa depan proyek Anda sudah memakai build_runner.
+      # - name: Run Build Runner
+      #   run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Run Unit Tests
-        run: flutter test || true # Menambahkan '|| true' sementara jika belum ada file test agar build tidak gagal
+        # Ditambahkan '|| true' agar jika tidak ada file test, build tidak digagalkan
+        run: flutter test || true 
 
       # 1. Merakit dan Mengubah Nama APK DEV
       - name: Build APK Release (Mode DEV)
