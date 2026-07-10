@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/theme/app_colors.dart';
-import 'screens/home/home_screen.dart';
+// Ubah import ini ke splash screen
+import 'screens/onboarding/splash_screen.dart'; 
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -28,10 +29,11 @@ class QiyamApp extends StatelessWidget {
           primary: AppColors.primaryDark,
           background: AppColors.background,
         ),
-        fontFamily: 'Roboto', // Ganti jika menggunakan font kustom seperti Poppins
+        fontFamily: 'Roboto', 
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      // Ubah dari HomeScreen() menjadi SplashScreen()
+      home: const SplashScreen(),
     );
   }
 }

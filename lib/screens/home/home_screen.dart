@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../schedule/schedule_sync_screen.dart';
+import '../mission/mission_catalog_screen.dart';
+import '../mission/mission_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,16 +18,15 @@ class HomeScreen extends StatelessWidget {
             children: [
               _buildHeader(),
               const SizedBox(height: 40),
-              _buildProgressCircle(),
+              _buildProgressCircle(context),
               const SizedBox(height: 30),
               _buildThreeBoxStats(),
               const SizedBox(height: 30),
-              _buildMissionList(),
+              _buildMissionList(context),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 
@@ -38,11 +40,11 @@ class HomeScreen extends StatelessWidget {
           children: [
             const CircleAvatar(
               radius: 24,
-              backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=11'), 
+              backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=11'),
             ),
             const SizedBox(height: 8),
             const Text(
-              'Qiyam',
+              'UTD Store',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -84,7 +86,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressCircle() {
+  Widget _buildProgressCircle(BuildContext context) {
     return Center(
       child: Column(
         children: [
@@ -128,7 +130,12 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MissionCatalogScreen()),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryDark,
               foregroundColor: AppColors.white,
@@ -196,7 +203,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMissionList() {
+  Widget _buildMissionList(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -208,7 +215,12 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ScheduleSyncScreen()),
+                );
+              },
               child: const Text(
                 'See Schedule',
                 style: TextStyle(color: Colors.teal),
@@ -216,95 +228,58 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-        _missionTile('Dhuhr Prayer', 'Due in 15 mins • 50 XP', Icons.access_time),
+        _missionTile(context, 'Dhuhr Prayer', 'Due in 15 mins • 50 XP', Icons.access_time),
         const SizedBox(height: 12),
-        _missionTile('Read 2 Pages Quran', 'Anytime today • 30 XP', Icons.menu_book),
+        _missionTile(context, 'Read 2 Pages Quran', 'Anytime today • 30 XP', Icons.menu_book),
       ],
     );
   }
 
-  Widget _missionTile(String title, String subtitle, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.primaryDark.withOpacity(0.03),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.primaryDark,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, color: AppColors.white, size: 20),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(color: AppColors.textLight, fontSize: 13),
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.radio_button_unchecked, color: AppColors.textLight),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomNav() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _navItem(Icons.check_circle, 'Missions', true),
-          _navItem(Icons.bar_chart, 'Stats', false),
-          _navItem(Icons.settings, 'Settings', false),
-        ],
-      ),
-    );
-  }
-
-  Widget _navItem(IconData icon, String label, bool isActive) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: isActive ? AppColors.primaryDark : AppColors.textLight,
+  Widget _missionTile(BuildContext context, String title, String subtitle, IconData icon) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MissionDetailScreen()),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.primaryDark.withOpacity(0.03),
+          borderRadius: BorderRadius.circular(12),
         ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-            color: isActive ? AppColors.primaryDark : AppColors.textLight,
-          ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppColors.primaryDark,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, color: AppColors.white, size: 20),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(color: AppColors.textLight, fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios, color: AppColors.textLight, size: 14),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
